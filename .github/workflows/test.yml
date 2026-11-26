@@ -1,0 +1,13 @@
+name: Send Photo
+on:
+  repository_dispatch:
+    types: [send_photo]
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendPhoto" \
+          -F "chat_id=${{ secrets.TELEGRAM_CHAT }}" \
+          -F "caption=${{ github.event.client_payload.caption }}" \
+          -F "photo=${{ github.event.client_payload.photo_url }}"
